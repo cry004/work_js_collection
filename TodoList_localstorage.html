@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+  <br><br>
+  <input type="text">
+  <button class="btn">send</button>
+  <ul class="todo">
+  </ul>
+</body>
+<script>
+  var btn = document.querySelector('.btn');
+var todo = document.querySelector('.todo');
+var text = document.querySelector('input');
+var data = JSON.parse(localStorage.getItem('listData'))||[]
+
+btn.addEventListener('click',textFun)
+function textFun(){
+  //var linode = document.createElement('li');
+  //linode.innerHTML = text.value+'  <a href="#">delete</a>'
+  //todo.append(linode)
+  var todo = {
+    content: text.value
+  }
+  data.push(todo);
+  localStorage.setItem('listData', JSON.stringify(data))
+  updateList(data)
+  text.value = '';
+}
+function updateList(data){
+  str = '';
+  for(let i = 0; i< data.length; i++){
+    str = str + '<li>'+data[i].content+' <a data-num='+i+'>delete</a></li>'
+  }
+  todo.innerHTML = str
+}
+todo.addEventListener('click',deleteFun);
+function deleteFun(e){
+  if(e.target.nodeName != 'A'){return}
+  var num = e.target.dataset.num;
+  console.log(e.target,num,data)
+  data.splice(num,1)
+  localStorage.setItem('listData', JSON.stringify(data))
+  updateList(data)
+//   var elem = e.target.parentNode;
+//   console.log(elem)
+//   elem.parentNode.removeChild(elem)
+  
+}
+</script>
+</html>
